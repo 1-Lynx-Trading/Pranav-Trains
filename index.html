@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pranav Trains - Melbourne Train Network</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #1a237e;
+            --secondary: #3949ab;
+            --accent: #00b0ff;
+            --light: #f5f5f5;
+            --dark: #121212;
+            --text: #333333;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 2rem;
+            color: white;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #0091ea;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 6rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            font-size: 2.5rem;
+            color: var(--primary);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            margin-bottom: 4rem;
+            font-size: 1.2rem;
+            color: var(--text);
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .about-image {
+            height: 400px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Train Models Section */
+        .train-models {
+            background-color: var(--dark);
+            color: white;
+        }
+
+        .train-models .section-title {
+            color: white;
+        }
+
+        .models-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .model-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .model-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .model-image {
+            height: 200px;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .model-content {
+            padding: 1.5rem;
+        }
+
+        .model-content h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        /* Tram Section */
+        .tram-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .tram-image {
+            height: 400px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .tram-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .tram-text p {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        /* History Section */
+        .timeline {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            background-color: var(--primary);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-content {
+            width: 45%;
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            margin-right: auto;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            margin-left: auto;
+        }
+
+        .timeline-year {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            z-index: 2;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .about-content, .tram-content {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline::before {
+                left: 30px;
+            }
+
+            .timeline-content {
+                width: calc(100% - 80px);
+                margin-left: 80px !important;
+            }
+
+            .timeline-year {
+                left: 30px;
+                transform: none;
+            }
+        }
+
+        /* Sketchfab Embed Styles */
+        .sketchfab-embed-wrapper {
+            width: 100%;
+            height: 100%;
+        }
+
+        .sketchfab-embed-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo-container">
+            <div class="logo">PT</div>
+            <div class="logo-text">Pranav Trains</div>
+        </div>
+        <div class="nav-links">
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#models">Train Models</a>
+            <a href="#tram">Tram Network</a>
+            <a href="#history">History</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Pranav Trains Melbourne</h1>
+            <p>Discover the comprehensive guide to Melbourne's metropolitan train system, serving over 200 stations across 16 lines.</p>
+            <a href="#about" class="btn">Explore Now</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <h2 class="section-title">About Melbourne Trains</h2>
+        <p class="section-subtitle">Learn about the extensive rail network that connects the Greater Melbourne area</p>
+        
+        <div class="about-content">
+            <div class="about-text">
+                <h3>Australia's Largest Urban Rail Network</h3>
+                <p>The Melbourne rail network is the backbone of public transport in Victoria, carrying over 240 million passenger trips annually. With its distinctive green and gold livery, the trains are an iconic part of Melbourne's identity.</p>
+                <p>The network spans over 372 kilometers of track, connecting the city center with suburbs as far as Pakenham, Cranbourne, Sunbury, and Werribee. The system operates from approximately 5:00 AM to midnight on most lines, with Night Network services on weekends.</p>
+                <p>All metropolitan trains are electric, powered by an overhead 1500V DC system, and operate on standard gauge tracks. The network is managed by Metro Trains Melbourne under contract to the Victorian Government.</p>
+            </div>
+            <div class="about-image">
+                <div class="sketchfab-embed-wrapper">
+                    <iframe title="Old Railway" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/d15ad99f694a444691b832039f6b43de/embed?autospin=1&autostart=1&preload=1"> </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Train Models Section -->
+    <section id="models" class="train-models">
+        <h2 class="section-title">Train Models</h2>
+        <p class="section-subtitle">Explore the different train models operating across Melbourne's network</p>
+        
+        <div class="models-container">
+            <div class="model-card">
+                <div class="model-image">
+                    <div class="sketchfab-embed-wrapper">
+                        <iframe title="Sydney Trains Waratah B Set (UV WIP)" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/36f89cddb615444491df3e9e419bb9a2/embed?autospin=1&autostart=1&preload=1"> </iframe>
+                    </div>
+                </div>
+                <div class="model-content">
+                    <h3>Waratah B Set</h3>
+                    <p>The Waratah trains are a modern electric multiple unit train operating on the Sydney Trains network. Known for their distinctive red front and advanced passenger amenities.</p>
+                </div>
+            </div>
+            
+            <div class="model-card">
+                <div class="model-image">
+                    <div class="sketchfab-embed-wrapper">
+                        <iframe title="Tangara Sydney Trains (T Set)" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/07d7a69ffb544ec48442ae3448ee6f1f/embed?autospin=1&autostart=1&preload=1"> </iframe>
+                    </div>
+                </div>
+                <div class="model-content">
+                    <h3>Tangara T Set</h3>
+                    <p>The Tangara is a type of electric multiple unit train that operates on the Sydney Trains network. Introduced in the late 1980s, these trains feature comfortable seating and reliable performance.</p>
+                </div>
+            </div>
+            
+            <div class="model-card">
+                <div class="model-image">
+                    <div class="sketchfab-embed-wrapper">
+                        <iframe title="Sydney Trains S Set (Low Poly)" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/e3b24e018ebc42769c08819669ad03df/embed?autospin=1&autostart=1&preload=1"> </iframe>
+                    </div>
+                </div>
+                <div class="model-content">
+                    <h3>S Set (Low Poly)</h3>
+                    <p>The S Set trains were introduced in the 1970s and are among the oldest still in service on the Sydney Trains network. Known for their distinctive silver and orange livery.</p>
+                </div>
+            </div>
+            
+            <div class="model-card">
+                <div class="model-image">
+                    <div class="sketchfab-embed-wrapper">
+                        <iframe title="Train Victorian A2" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/881f0ad498994ad9b5a3ebf6629eb9cc/embed?autospin=1&autostart=1&preload=1"> </iframe>
+                    </div>
+                </div>
+                <div class="model-content">
+                    <h3>Victorian A2</h3>
+                    <p>The Victorian Railways A2 class is a class of 4-6-0 steam locomotives built for the Victorian Railways between 1907 and 1915. These historic locomotives played a crucial role in Victoria's rail history.</p>
+                </div>
+            </div>
+            
+            <div class="model-card">
+                <div class="model-image">
+                    <div class="sketchfab-embed-wrapper">
+                        <iframe title="Soviet Train 3D model by Ajay (High Poly Train)" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/6a4518dd6bd4472083834bac4d905c70/embed?autospin=1&autostart=1&preload=1"> </iframe>
+                    </div>
+                </div>
+                <div class="model-content">
+                    <h3>Soviet Train</h3>
+                    <p>This high-poly Soviet-era train model showcases the distinctive design aesthetic of Eastern European railway engineering. These robust trains were known for their durability and functionality.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tram Section -->
+    <section id="tram" class="tram">
+        <h2 class="section-title">Alstom Citadis X05 Tram</h2>
+        <p class="section-subtitle">Discover Melbourne's modern tram network featuring the advanced Alstom Citadis X05</p>
+        
+        <div class="tram-content">
+            <div class="tram-image">
+                <div class="sketchfab-embed-wrapper">
+                    <iframe title="Alstom Citadis X05 - Paris T9 Tram" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/ed2353de18e64a7e84a4d62238323d0c/embed?autospin=1&autostart=1&preload=1"> </iframe>
+                </div>
+            </div>
+            <div class="tram-text">
+                <h3>Revolutionizing Urban Transport</h3>
+                <p>The Alstom Citadis X05 is the latest generation of trams operating in Melbourne, part of the city's commitment to sustainable and efficient public transport. These low-floor trams provide exceptional accessibility and passenger comfort.</p>
+                <p>With a capacity of up to 210 passengers, the Citadis X05 features state-of-the-art technology including regenerative braking, air conditioning, real-time passenger information, and spacious interiors designed for Melbourne's diverse commuter needs.</p>
+                <p>The trams operate across Melbourne's extensive tram network, which is the largest in the world with over 250 kilometers of track and 1,763 tram stops. The network carries over 200 million passenger trips annually.</p>
+                <p>Key features include 100% low-floor design for easy boarding, energy-efficient LED lighting, advanced climate control systems, and quiet operation that reduces noise pollution in urban areas.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- History Section -->
+    <section id="history" class="history">
+        <h2 class="section-title">Historical Timeline</h2>
+        <p class="section-subtitle">Key milestones in the development of Melbourne's rail network</p>
+        
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-year">1854</div>
+                <div class="timeline-content">
+                    <h3>First Railway Line</h3>
+                    <p>Melbourne's first railway line opened between Flinders Street and Port Melbourne, making it one of the first cities in Australia with a railway system.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-year">1919</div>
+                <div class="timeline-content">
+                    <h3>Electrification Begins</h3>
+                    <p>The Melbourne rail network began its transition to electric trains, starting with the suburban lines to facilitate faster and more efficient services.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-year">1981</div>
+                <div class="timeline-content">
+                    <h3>Comeng Trains Introduced</h3>
+                    <p>The first Comeng trains entered service, eventually becoming the backbone of the Melbourne fleet for decades.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-year">2009</div>
+                <div class="timeline-content">
+                    <h3>Myki Implementation</h3>
+                    <p>The Myki smartcard ticketing system was introduced, replacing the previous paper-based Metcard system.</p>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-year">2020</div>
+                <div class="timeline-content">
+                    <h3>High Capacity Metro Trains</h3>
+                    <p>The first High Capacity Metro Trains entered service, featuring modern amenities and increased passenger capacity.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Pranav Trains</h3>
+                <p>Your comprehensive guide to Melbourne's metropolitan train network, providing detailed information about services, history, and infrastructure.</p>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#models">Train Models</a></li>
+                    <li><a href="#tram">Tram Network</a></li>
+                    <li><a href="#history">History</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2023 Pranav Trains Information Portal. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
