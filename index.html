@@ -1,622 +1,482 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pranav Trains - Melbourne Train Network</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* Reset and base styles */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Ask Sean — Math & Science Problems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-        :root {
-            --primary: #1a237e;
-            --secondary: #3949ab;
-            --accent: #00b0ff;
-            --light: #f5f5f5;
-            --dark: #121212;
-            --text: #333333;
-        }
+  :root {
+    --bg:        #0d0f14;
+    --surface:   #13161e;
+    --surface2:  #1c2030;
+    --border:    rgba(255,255,255,0.07);
+    --border2:   rgba(255,255,255,0.13);
+    --gold:      #e8b84b;
+    --gold-dim:  rgba(232,184,75,0.15);
+    --teal:      #3fd8c0;
+    --teal-dim:  rgba(63,216,192,0.12);
+    --text:      #eceae2;
+    --muted:     #7a7d8a;
+    --danger:    #e05858;
+    --radius:    12px;
+    --radius-lg: 20px;
+  }
 
-        html {
-            scroll-behavior: smooth;
-        }
+  html { scroll-behavior: smooth; }
 
-        body {
-            background-color: var(--light);
-            color: var(--text);
-            overflow-x: hidden;
-        }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
 
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background-color: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+  /* ─── animated grid background ─── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+    z-index: 0;
+  }
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
+  /* ─── glow blobs ─── */
+  .glow {
+    position: fixed; border-radius: 50%; filter: blur(120px);
+    pointer-events: none; z-index: 0; opacity: 0.18;
+  }
+  .glow-a { width: 500px; height: 500px; background: #e8b84b; top: -180px; right: -100px; }
+  .glow-b { width: 400px; height: 400px; background: #3fd8c0; bottom: -150px; left: -80px; }
 
-        .logo {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
+  /* ─── layout ─── */
+  .wrap { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; padding: 0 24px; }
 
-        .logo-text {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
+  /* ─── header ─── */
+  header {
+    padding: 72px 0 56px;
+    text-align: center;
+  }
 
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-        }
+  .badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--gold-dim); border: 1px solid rgba(232,184,75,0.3);
+    border-radius: 100px; padding: 6px 18px;
+    font-size: 12px; font-weight: 500; letter-spacing: 0.06em;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 28px;
+  }
+  .badge::before { content: '✦'; font-size: 10px; }
 
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text);
-            font-weight: 500;
-            transition: color 0.3s;
-        }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(38px, 7vw, 64px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+  h1 em { font-style: italic; color: var(--gold); }
 
-        .nav-links a:hover {
-            color: var(--accent);
-        }
+  .subtitle {
+    font-size: 17px; font-weight: 300; color: var(--muted); line-height: 1.7;
+    max-width: 500px; margin: 0 auto 48px;
+  }
 
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 0 2rem;
-            color: white;
-            overflow: hidden;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-        }
+  /* ─── subject pills ─── */
+  .subjects {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 52px;
+  }
+  .pill {
+    display: inline-flex; align-items: center; gap: 7px;
+    background: var(--surface); border: 1px solid var(--border2);
+    border-radius: 100px; padding: 8px 18px;
+    font-size: 13px; color: var(--muted); transition: all 0.2s;
+    cursor: default;
+  }
+  .pill .dot {
+    width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+  }
+  .pill:nth-child(1) .dot { background: #e8b84b; }
+  .pill:nth-child(2) .dot { background: #3fd8c0; }
+  .pill:nth-child(3) .dot { background: #8b7cf8; }
+  .pill:nth-child(4) .dot { background: #e05858; }
+  .pill:nth-child(5) .dot { background: #54a7f5; }
+  .pill:nth-child(6) .dot { background: #7bd97b; }
 
-        .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-        }
+  /* ─── form card ─── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-lg);
+    padding: 48px;
+    margin-bottom: 80px;
+  }
 
-        .hero-content {
-            max-width: 800px;
-            z-index: 2;
-        }
+  .card-header {
+    display: flex; align-items: center; gap: 14px; margin-bottom: 36px;
+  }
+  .icon-wrap {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: var(--gold-dim); border: 1px solid rgba(232,184,75,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+  }
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 600;
+  }
+  .card-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
 
-        .hero h1 {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
-        }
+  /* ─── form ─── */
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } .card { padding: 28px 22px; } }
 
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-        }
+  .field { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+  .field:last-of-type { margin-bottom: 0; }
 
-        .btn {
-            display: inline-block;
-            padding: 0.8rem 1.5rem;
-            background-color: var(--accent);
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
+  label {
+    font-size: 13px; font-weight: 500; color: var(--muted);
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  label span { color: var(--gold); }
 
-        .btn:hover {
-            background-color: #0091ea;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
+  input, select, textarea {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 13px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+    appearance: none;
+  }
+  input::placeholder, textarea::placeholder { color: #454858; }
+  select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a7d8a' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; cursor: pointer; }
+  select option { background: #1c2030; }
+  textarea { resize: vertical; min-height: 140px; line-height: 1.6; }
 
-        /* Section Styles */
-        section {
-            padding: 6rem 2rem;
-        }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px var(--gold-dim);
+  }
+  input.error, select.error, textarea.error {
+    border-color: var(--danger);
+    box-shadow: 0 0 0 3px rgba(224,88,88,0.12);
+  }
 
-        .section-title {
-            text-align: center;
-            margin-bottom: 3rem;
-            font-size: 2.5rem;
-            color: var(--primary);
-        }
+  .hint { font-size: 12px; color: var(--muted); margin-top: -4px; }
+  .err-msg { font-size: 12px; color: var(--danger); display: none; }
+  .err-msg.show { display: block; }
 
-        .section-subtitle {
-            text-align: center;
-            margin-bottom: 4rem;
-            font-size: 1.2rem;
-            color: var(--text);
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+  /* ─── difficulty slider ─── */
+  .difficulty-wrap { margin-bottom: 20px; }
+  .difficulty-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin-top: 8px; }
+  input[type=range] {
+    padding: 0; height: 6px; border-radius: 100px; cursor: pointer;
+    background: var(--surface2); border: none; box-shadow: none;
+    accent-color: var(--gold);
+  }
+  input[type=range]:focus { box-shadow: none; }
+  .diff-value {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px; color: var(--gold);
+    background: var(--gold-dim); border: 1px solid rgba(232,184,75,0.25);
+    border-radius: 6px; padding: 2px 10px; display: inline-block;
+  }
 
-        /* About Section */
-        .about-content {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+  /* ─── divider ─── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
 
-        .about-text h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            color: var(--primary);
-        }
+  /* ─── submit button ─── */
+  .btn-submit {
+    width: 100%; padding: 16px;
+    background: var(--gold); color: #0d0f14;
+    font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500;
+    border: none; border-radius: var(--radius); cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    margin-top: 28px; letter-spacing: 0.01em;
+  }
+  .btn-submit:hover { opacity: 0.9; }
+  .btn-submit:active { transform: scale(0.985); }
+  .btn-submit svg { width: 18px; height: 18px; }
 
-        .about-text p {
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
+  /* ─── success / sending states ─── */
+  .btn-submit.sending { opacity: 0.7; pointer-events: none; }
+  
+  .success-card {
+    display: none; flex-direction: column; align-items: center; text-align: center;
+    padding: 64px 48px; gap: 16px;
+  }
+  .success-card.show { display: flex; }
+  .form-inner.hide { display: none; }
 
-        .about-image {
-            height: 400px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
+  .success-icon {
+    width: 64px; height: 64px; border-radius: 50%;
+    background: var(--teal-dim); border: 1px solid rgba(63,216,192,0.3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; margin-bottom: 8px;
+  }
+  .success-card h2 { font-family: 'Playfair Display', serif; font-size: 26px; }
+  .success-card p { color: var(--muted); font-size: 15px; line-height: 1.6; max-width: 340px; }
+  .btn-reset {
+    margin-top: 8px; background: transparent; border: 1px solid var(--border2);
+    color: var(--muted); border-radius: var(--radius); padding: 10px 24px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-reset:hover { border-color: var(--gold); color: var(--gold); }
 
-        /* Train Models Section */
-        .train-models {
-            background-color: var(--dark);
-            color: white;
-        }
+  /* ─── footer ─── */
+  footer {
+    text-align: center; padding: 24px 0 48px;
+    font-size: 13px; color: #3a3d4a;
+  }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--gold); }
 
-        .train-models .section-title {
-            color: white;
-        }
-
-        .models-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-        }
-
-        .model-card {
-            background-color: rgba(255, 255, 255, 0.05);
-            border-radius: 8px;
-            overflow: hidden;
-            transition: transform 0.3s;
-        }
-
-        .model-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .model-image {
-            height: 200px;
-            background-color: #333;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .model-content {
-            padding: 1.5rem;
-        }
-
-        .model-content h3 {
-            margin-bottom: 1rem;
-            font-size: 1.5rem;
-        }
-
-        /* Tram Section */
-        .tram-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .tram-image {
-            height: 400px;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .tram-text h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            color: var(--primary);
-        }
-
-        .tram-text p {
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        /* History Section */
-        .timeline {
-            max-width: 1000px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 50%;
-            width: 2px;
-            background-color: var(--primary);
-            transform: translateX(-50%);
-        }
-
-        .timeline-item {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 3rem;
-            position: relative;
-        }
-
-        .timeline-content {
-            width: 45%;
-            padding: 1.5rem;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .timeline-item:nth-child(odd) .timeline-content {
-            margin-right: auto;
-        }
-
-        .timeline-item:nth-child(even) .timeline-content {
-            margin-left: auto;
-        }
-
-        .timeline-year {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: var(--primary);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-weight: 600;
-            z-index: 2;
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--dark);
-            color: white;
-            padding: 4rem 2rem 2rem;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-            margin-bottom: 3rem;
-        }
-
-        .footer-column h3 {
-            margin-bottom: 1.5rem;
-            font-size: 1.3rem;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 0.8rem;
-        }
-
-        .footer-links a {
-            color: #ccc;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: var(--accent);
-        }
-
-        .copyright {
-            text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: #aaa;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .about-content, .tram-content {
-                grid-template-columns: 1fr;
-            }
-
-            .timeline::before {
-                left: 30px;
-            }
-
-            .timeline-content {
-                width: calc(100% - 80px);
-                margin-left: 80px !important;
-            }
-
-            .timeline-year {
-                left: 30px;
-                transform: none;
-            }
-        }
-
-        /* Sketchfab Embed Styles */
-        .sketchfab-embed-wrapper {
-            width: 100%;
-            height: 100%;
-        }
-
-        .sketchfab-embed-wrapper iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
+  /* ─── entrance animation ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  header  { animation: fadeUp 0.6s ease both; }
+  .subjects { animation: fadeUp 0.6s 0.1s ease both; }
+  .card   { animation: fadeUp 0.6s 0.2s ease both; }
+</style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="logo-container">
-            <div class="logo">PT</div>
-            <div class="logo-text">Pranav Trains</div>
-        </div>
-        <div class="nav-links">
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#models">Train Models</a>
-            <a href="#tram">Tram Network</a>
-            <a href="#history">History</a>
-        </div>
-    </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1>Pranav Trains Melbourne</h1>
-            <p>Discover the comprehensive guide to Melbourne's metropolitan train system, serving over 200 stations across 16 lines.</p>
-            <a href="#about" class="btn">Explore Now</a>
-        </div>
-    </section>
+<div class="glow glow-a"></div>
+<div class="glow glow-b"></div>
 
-    <!-- About Section -->
-    <section id="about" class="about">
-        <h2 class="section-title">About Melbourne Trains</h2>
-        <p class="section-subtitle">Learn about the extensive rail network that connects the Greater Melbourne area</p>
-        
-        <div class="about-content">
-            <div class="about-text">
-                <h3>Australia's Largest Urban Rail Network</h3>
-                <p>The Melbourne rail network is the backbone of public transport in Victoria, carrying over 240 million passenger trips annually. With its distinctive green and gold livery, the trains are an iconic part of Melbourne's identity.</p>
-                <p>The network spans over 372 kilometers of track, connecting the city center with suburbs as far as Pakenham, Cranbourne, Sunbury, and Werribee. The system operates from approximately 5:00 AM to midnight on most lines, with Night Network services on weekends.</p>
-                <p>All metropolitan trains are electric, powered by an overhead 1500V DC system, and operate on standard gauge tracks. The network is managed by Metro Trains Melbourne under contract to the Victorian Government.</p>
-            </div>
-            <div class="about-image">
-                <div class="sketchfab-embed-wrapper">
-                    <iframe title="Old Railway" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/d15ad99f694a444691b832039f6b43de/embed?autospin=1&autostart=1&preload=1"> </iframe>
-                </div>
-            </div>
-        </div>
-    </section>
+<div class="wrap">
 
-    <!-- Train Models Section -->
-    <section id="models" class="train-models">
-        <h2 class="section-title">Train Models</h2>
-        <p class="section-subtitle">Explore the different train models operating across Melbourne's network</p>
-        
-        <div class="models-container">
-            <div class="model-card">
-                <div class="model-image">
-                    <div class="sketchfab-embed-wrapper">
-                        <iframe title="Sydney Trains Waratah B Set (UV WIP)" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/36f89cddb615444491df3e9e419bb9a2/embed?autospin=1&autostart=1&preload=1"> </iframe>
-                    </div>
-                </div>
-                <div class="model-content">
-                    <h3>Waratah B Set</h3>
-                    <p>The Waratah trains are a modern electric multiple unit train operating on the Sydney Trains network. Known for their distinctive red front and advanced passenger amenities.</p>
-                </div>
-            </div>
-            
-            <div class="model-card">
-                <div class="model-image">
-                    <div class="sketchfab-embed-wrapper">
-                        <iframe title="Tangara Sydney Trains (T Set)" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/07d7a69ffb544ec48442ae3448ee6f1f/embed?autospin=1&autostart=1&preload=1"> </iframe>
-                    </div>
-                </div>
-                <div class="model-content">
-                    <h3>Tangara T Set</h3>
-                    <p>The Tangara is a type of electric multiple unit train that operates on the Sydney Trains network. Introduced in the late 1980s, these trains feature comfortable seating and reliable performance.</p>
-                </div>
-            </div>
-            
-            <div class="model-card">
-                <div class="model-image">
-                    <div class="sketchfab-embed-wrapper">
-                        <iframe title="Sydney Trains S Set (Low Poly)" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/e3b24e018ebc42769c08819669ad03df/embed?autospin=1&autostart=1&preload=1"> </iframe>
-                    </div>
-                </div>
-                <div class="model-content">
-                    <h3>S Set (Low Poly)</h3>
-                    <p>The S Set trains were introduced in the 1970s and are among the oldest still in service on the Sydney Trains network. Known for their distinctive silver and orange livery.</p>
-                </div>
-            </div>
-            
-            <div class="model-card">
-                <div class="model-image">
-                    <div class="sketchfab-embed-wrapper">
-                        <iframe title="Train Victorian A2" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/881f0ad498994ad9b5a3ebf6629eb9cc/embed?autospin=1&autostart=1&preload=1"> </iframe>
-                    </div>
-                </div>
-                <div class="model-content">
-                    <h3>Victorian A2</h3>
-                    <p>The Victorian Railways A2 class is a class of 4-6-0 steam locomotives built for the Victorian Railways between 1907 and 1915. These historic locomotives played a crucial role in Victoria's rail history.</p>
-                </div>
-            </div>
-            
-            <div class="model-card">
-                <div class="model-image">
-                    <div class="sketchfab-embed-wrapper">
-                        <iframe title="Soviet Train 3D model by Ajay (High Poly Train)" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/6a4518dd6bd4472083834bac4d905c70/embed?autospin=1&autostart=1&preload=1"> </iframe>
-                    </div>
-                </div>
-                <div class="model-content">
-                    <h3>Soviet Train</h3>
-                    <p>This high-poly Soviet-era train model showcases the distinctive design aesthetic of Eastern European railway engineering. These robust trains were known for their durability and functionality.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+  <header>
+    <div class="badge">Math & Science Tutoring</div>
+    <h1>Got a tough problem? <br/><em>Let's solve it.</em></h1>
+    <p class="subtitle">Send me your math or science questions and I'll work through them with you. No problem is too hard — or too easy.</p>
+  </header>
 
-    <!-- Tram Section -->
-    <section id="tram" class="tram">
-        <h2 class="section-title">Alstom Citadis X05 Tram</h2>
-        <p class="section-subtitle">Discover Melbourne's modern tram network featuring the advanced Alstom Citadis X05</p>
-        
-        <div class="tram-content">
-            <div class="tram-image">
-                <div class="sketchfab-embed-wrapper">
-                    <iframe title="Alstom Citadis X05 - Paris T9 Tram" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/ed2353de18e64a7e84a4d62238323d0c/embed?autospin=1&autostart=1&preload=1"> </iframe>
-                </div>
-            </div>
-            <div class="tram-text">
-                <h3>Revolutionizing Urban Transport</h3>
-                <p>The Alstom Citadis X05 is the latest generation of trams operating in Melbourne, part of the city's commitment to sustainable and efficient public transport. These low-floor trams provide exceptional accessibility and passenger comfort.</p>
-                <p>With a capacity of up to 210 passengers, the Citadis X05 features state-of-the-art technology including regenerative braking, air conditioning, real-time passenger information, and spacious interiors designed for Melbourne's diverse commuter needs.</p>
-                <p>The trams operate across Melbourne's extensive tram network, which is the largest in the world with over 250 kilometers of track and 1,763 tram stops. The network carries over 200 million passenger trips annually.</p>
-                <p>Key features include 100% low-floor design for easy boarding, energy-efficient LED lighting, advanced climate control systems, and quiet operation that reduces noise pollution in urban areas.</p>
-            </div>
-        </div>
-    </section>
+  <div class="subjects">
+    <div class="pill"><span class="dot"></span>Algebra &amp; Calculus</div>
+    <div class="pill"><span class="dot"></span>Physics</div>
+    <div class="pill"><span class="dot"></span>Chemistry</div>
+    <div class="pill"><span class="dot"></span>Statistics</div>
+    <div class="pill"><span class="dot"></span>Biology</div>
+    <div class="pill"><span class="dot"></span>Geometry</div>
+  </div>
 
-    <!-- History Section -->
-    <section id="history" class="history">
-        <h2 class="section-title">Historical Timeline</h2>
-        <p class="section-subtitle">Key milestones in the development of Melbourne's rail network</p>
-        
-        <div class="timeline">
-            <div class="timeline-item">
-                <div class="timeline-year">1854</div>
-                <div class="timeline-content">
-                    <h3>First Railway Line</h3>
-                    <p>Melbourne's first railway line opened between Flinders Street and Port Melbourne, making it one of the first cities in Australia with a railway system.</p>
-                </div>
-            </div>
-            
-            <div class="timeline-item">
-                <div class="timeline-year">1919</div>
-                <div class="timeline-content">
-                    <h3>Electrification Begins</h3>
-                    <p>The Melbourne rail network began its transition to electric trains, starting with the suburban lines to facilitate faster and more efficient services.</p>
-                </div>
-            </div>
-            
-            <div class="timeline-item">
-                <div class="timeline-year">1981</div>
-                <div class="timeline-content">
-                    <h3>Comeng Trains Introduced</h3>
-                    <p>The first Comeng trains entered service, eventually becoming the backbone of the Melbourne fleet for decades.</p>
-                </div>
-            </div>
-            
-            <div class="timeline-item">
-                <div class="timeline-year">2009</div>
-                <div class="timeline-content">
-                    <h3>Myki Implementation</h3>
-                    <p>The Myki smartcard ticketing system was introduced, replacing the previous paper-based Metcard system.</p>
-                </div>
-            </div>
-            
-            <div class="timeline-item">
-                <div class="timeline-year">2020</div>
-                <div class="timeline-content">
-                    <h3>High Capacity Metro Trains</h3>
-                    <p>The first High Capacity Metro Trains entered service, featuring modern amenities and increased passenger capacity.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+  <div class="card">
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <div class="footer-column">
-                <h3>Pranav Trains</h3>
-                <p>Your comprehensive guide to Melbourne's metropolitan train network, providing detailed information about services, history, and infrastructure.</p>
-            </div>
-            
-            <div class="footer-column">
-                <h3>Quick Links</h3>
-                <ul class="footer-links">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#models">Train Models</a></li>
-                    <li><a href="#tram">Tram Network</a></li>
-                    <li><a href="#history">History</a></li>
-                </ul>
-            </div>
+    <div class="card-header">
+      <div class="icon-wrap">✉</div>
+      <div>
+        <div class="card-title">Submit a Problem</div>
+        <div class="card-sub">I'll reply to your email with a full solution</div>
+      </div>
+    </div>
+
+    <!-- SUCCESS STATE -->
+    <div class="success-card" id="successCard">
+      <div class="success-icon">✓</div>
+      <h2>Problem sent!</h2>
+      <p>Your problem has been sent to Sean. Expect a reply soon — keep an eye on your inbox.</p>
+      <button class="btn-reset" id="btnReset">Submit another problem</button>
+    </div>
+
+    <!-- FORM -->
+    <div class="form-inner" id="formInner">
+      <form id="problemForm" novalidate>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="name">Your name <span>*</span></label>
+            <input type="text" id="name" name="name" placeholder="Alex Johnson" autocomplete="name" />
+            <span class="err-msg" id="name-err">Please enter your name.</span>
+          </div>
+          <div class="field">
+            <label for="email">Your email <span>*</span></label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" />
+            <span class="err-msg" id="email-err">Please enter a valid email.</span>
+          </div>
         </div>
-        
-        <div class="copyright">
-            <p>&copy; 2023 Pranav Trains Information Portal. All rights reserved.</p>
+
+        <div class="form-row">
+          <div class="field">
+            <label for="subject">Subject <span>*</span></label>
+            <select id="subject" name="subject">
+              <option value="" disabled selected>Choose a subject…</option>
+              <optgroup label="Mathematics">
+                <option>Algebra</option>
+                <option>Calculus</option>
+                <option>Statistics &amp; Probability</option>
+                <option>Geometry &amp; Trigonometry</option>
+                <option>Linear Algebra</option>
+                <option>Discrete Mathematics</option>
+                <option>Other Mathematics</option>
+              </optgroup>
+              <optgroup label="Science">
+                <option>Physics</option>
+                <option>Chemistry</option>
+                <option>Biology</option>
+                <option>Earth &amp; Space Science</option>
+                <option>Other Science</option>
+              </optgroup>
+            </select>
+            <span class="err-msg" id="subject-err">Please select a subject.</span>
+          </div>
+          <div class="field">
+            <label for="level">Education level</label>
+            <select id="level" name="level">
+              <option value="" disabled selected>Select level…</option>
+              <option>Middle School</option>
+              <option>High School</option>
+              <option>University / College</option>
+              <option>Graduate Level</option>
+              <option>Self-studying</option>
+            </select>
+          </div>
         </div>
-    </footer>
+
+        <div class="field difficulty-wrap">
+          <label for="difficulty">Difficulty — <span class="diff-value" id="diffDisplay">5 / 10</span></label>
+          <input type="range" id="difficulty" name="difficulty" min="1" max="10" value="5" step="1" />
+          <div class="difficulty-labels"><span>Easy</span><span>Medium</span><span>Very Hard</span></div>
+        </div>
+
+        <div class="field">
+          <label for="problem">Problem statement <span>*</span></label>
+          <textarea id="problem" name="problem" placeholder="Describe your problem here. Be as specific as possible — include equations, formulas, or context that might help. You can use standard notation like x^2, sqrt(x), or fractions like 3/4."></textarea>
+          <span class="err-msg" id="problem-err">Please describe your problem.</span>
+        </div>
+
+        <div class="field">
+          <label for="attempt">Your attempt <small style="font-size:11px;color:#454858;text-transform:none;letter-spacing:0">(optional but helpful)</small></label>
+          <textarea id="attempt" name="attempt" placeholder="Show what you've tried so far, where you got stuck, or what approach you think might work…" style="min-height:100px;"></textarea>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="field">
+          <label for="context">Additional context</label>
+          <input type="text" id="context" name="context" placeholder="e.g. exam prep, homework, curiosity — anything that helps me tailor the answer" />
+          <div class="hint">The more context you share, the better I can help.</div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btnSubmit">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          Send Problem to Sean
+        </button>
+
+      </form>
+    </div>
+
+  </div><!-- card -->
+
+  <footer>
+    Problems go directly to <a href="mailto:sssean.kk@gmail.com">sssean.kk@gmail.com</a> — replies usually within 24 hours.
+  </footer>
+
+</div><!-- wrap -->
+
+<script>
+const diffSlider = document.getElementById('difficulty');
+const diffDisplay = document.getElementById('diffDisplay');
+diffSlider.addEventListener('input', () => {
+  diffDisplay.textContent = diffSlider.value + ' / 10';
+});
+
+function validate() {
+  let ok = true;
+
+  function check(id, errId, testFn) {
+    const el = document.getElementById(id);
+    const err = document.getElementById(errId);
+    if (!testFn(el.value.trim())) {
+      el.classList.add('error'); err.classList.add('show'); ok = false;
+    } else {
+      el.classList.remove('error'); err.classList.remove('show');
+    }
+  }
+
+  check('name',    'name-err',    v => v.length > 0);
+  check('email',   'email-err',   v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v));
+  check('subject', 'subject-err', v => v.length > 0);
+  check('problem', 'problem-err', v => v.length > 10);
+  return ok;
+}
+
+document.getElementById('problemForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  if (!validate()) return;
+
+  const btn = document.getElementById('btnSubmit');
+  btn.classList.add('sending');
+  btn.textContent = 'Opening your email client…';
+
+  const name    = document.getElementById('name').value.trim();
+  const email   = document.getElementById('email').value.trim();
+  const subject = document.getElementById('subject').value;
+  const level   = document.getElementById('level').value || 'Not specified';
+  const diff    = document.getElementById('difficulty').value;
+  const problem = document.getElementById('problem').value.trim();
+  const attempt = document.getElementById('attempt').value.trim();
+  const context = document.getElementById('context').value.trim();
+
+  const body = [
+    `NAME: ${name}`,
+    `REPLY TO: ${email}`,
+    `SUBJECT: ${subject}`,
+    `LEVEL: ${level}`,
+    `DIFFICULTY: ${diff}/10`,
+    '',
+    '─── PROBLEM ───',
+    problem,
+    attempt ? '\n─── THEIR ATTEMPT ───\n' + attempt : '',
+    context ? '\n─── CONTEXT ───\n' + context : ''
+  ].filter(l => l !== undefined).join('\n');
+
+  const mailto = `mailto:sssean.kk@gmail.com`
+    + `?subject=${encodeURIComponent('[Math/Sci] ' + subject + ' — ' + name)}`
+    + `&body=${encodeURIComponent(body)}`;
+
+  window.location.href = mailto;
+
+  setTimeout(() => {
+    document.getElementById('formInner').classList.add('hide');
+    document.getElementById('successCard').classList.add('show');
+  }, 800);
+});
+
+document.getElementById('btnReset').addEventListener('click', () => {
+  document.getElementById('problemForm').reset();
+  diffDisplay.textContent = '5 / 10';
+  document.getElementById('formInner').classList.remove('hide');
+  document.getElementById('successCard').classList.remove('show');
+  document.getElementById('btnSubmit').classList.remove('sending');
+  document.getElementById('btnSubmit').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send Problem to Sean`;
+  document.querySelectorAll('.error').forEach(el => el.classList.remove('error'));
+  document.querySelectorAll('.err-msg').forEach(el => el.classList.remove('show'));
+});
+
+['name','email','subject','problem'].forEach(id => {
+  const el = document.getElementById(id);
+  el.addEventListener('input', () => {
+    el.classList.remove('error');
+    document.getElementById(id + '-err').classList.remove('show');
+  });
+});
+</script>
 </body>
 </html>
